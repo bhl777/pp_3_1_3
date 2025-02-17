@@ -36,23 +36,17 @@ public class AdminController {
         else {
             model.addAttribute("currUser", new User());
         }
-
         model.addAttribute("newUser", new User());
-
         model.addAttribute("users", userService.findAllUsers());
-
         List<Role> allRoles = roleService.getAllRoles();
         model.addAttribute("allRoles", allRoles);
 
         return "admin"; // имя представления;
-
     }
 
     @GetMapping("/new")
     public String getAddPage(Model model) {
-
         model.addAttribute("user", new User());
-
         List<Role> allRoles = roleService.getAllRoles();
         model.addAttribute("allRoles", allRoles);
 
@@ -70,8 +64,7 @@ public class AdminController {
     public String getDeletePage(Model model,
                                 @RequestParam Long id) {
         User user = userService.findById(id); // Загружаем пользователя по id
-        model.addAttribute("user", user); // Передаем существующего пользователя
-
+        model.addAttribute("user", user);// Передаем существующего пользователя
         List<Role> allRoles = roleService.getAllRoles();
         model.addAttribute("allRoles", allRoles);
 
@@ -90,7 +83,6 @@ public class AdminController {
                                 @RequestParam Long id) {
         User user = userService.findById(id); // Загружаем пользователя по id
         model.addAttribute("user", user); // Передаем существующего пользователя
-
         List<Role> allRoles = roleService.getAllRoles();
         model.addAttribute("allRoles", allRoles);
 
@@ -108,7 +100,6 @@ public class AdminController {
     @GetMapping(value = "/user")
     public String getUserProfile(Model model,
                                  @RequestParam Long id) {
-
         model.addAttribute("user", userService.findById(id));
 
         return "user";

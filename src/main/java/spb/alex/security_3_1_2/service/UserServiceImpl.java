@@ -32,7 +32,6 @@ public class UserServiceImpl implements UserDetailsService,UserService {
     }
 
     @Override
-    @Transactional
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         User user = userRepository.findUserByUsername(username);
         if (user == null) {
@@ -81,6 +80,7 @@ public class UserServiceImpl implements UserDetailsService,UserService {
     }
 
     @Override
+    @Transactional
     public void createUserWithRoles(User user, Set<Role> roles) {
         user.setPassword(passwordEncoder.encode(user.getPassword()));
 
@@ -115,7 +115,6 @@ public class UserServiceImpl implements UserDetailsService,UserService {
         }
 
         existingUser.setRoles(roles);
-
         userRepository.save(existingUser);
     }
 

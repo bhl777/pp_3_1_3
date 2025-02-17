@@ -26,15 +26,11 @@ public class UserController {
 
         if (authentication != null) {
             UserDetails ud = (UserDetails) authentication.getPrincipal();
-
             User user = userService.findByName(ud.getUsername());
             model.addAttribute("user", user);
-
             boolean b = ud.getAuthorities().stream().anyMatch(
                     a -> a.getAuthority().equals("ROLE_ADMIN"));
-
             model.addAttribute("iAmAdmin", (b) ? 1 : 0);
-
         } else {
             model.addAttribute("iAmAdmin", 0);
         }
