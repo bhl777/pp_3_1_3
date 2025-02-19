@@ -1,4 +1,4 @@
-package spb.alex.security_3_1_2.service;
+package spb.alex.security_3_1_3.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -7,10 +7,10 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import spb.alex.security_3_1_2.model.Role;
-import spb.alex.security_3_1_2.model.User;
-import spb.alex.security_3_1_2.repository.RoleRepository;
-import spb.alex.security_3_1_2.repository.UserRepository;
+import spb.alex.security_3_1_3.model.Role;
+import spb.alex.security_3_1_3.model.User;
+import spb.alex.security_3_1_3.repository.RoleRepository;
+import spb.alex.security_3_1_3.repository.UserRepository;
 
 import java.util.HashSet;
 import java.util.List;
@@ -18,7 +18,7 @@ import java.util.Set;
 import java.util.stream.Collectors;
 
 @Service
-public class UserServiceImpl implements UserDetailsService,UserService {
+public class UserServiceImpl implements UserDetailsService, UserService {
 
     private final UserRepository userRepository;
     private final RoleRepository roleRepository;
@@ -124,8 +124,19 @@ public class UserServiceImpl implements UserDetailsService,UserService {
     }
 
     @Override
-    public User findByName(String username)
-    {
+    @Transactional
+    public void createUserFromRest(User user) {
+        userRepository.save(user);
+    }
+
+    @Override
+    @Transactional
+    public User saveUser(User user) {
+        return userRepository.save(user);
+    }
+
+    @Override
+    public User findByName(String username) {
         return userRepository.findUserByUsername(username);
     }
 }

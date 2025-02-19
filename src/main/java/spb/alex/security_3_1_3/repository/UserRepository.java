@@ -1,10 +1,10 @@
-package spb.alex.security_3_1_2.repository;
+package spb.alex.security_3_1_3.repository;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
-import spb.alex.security_3_1_2.model.User;
+import spb.alex.security_3_1_3.model.User;
 
 @Repository
 public interface UserRepository extends JpaRepository<User, Long> {

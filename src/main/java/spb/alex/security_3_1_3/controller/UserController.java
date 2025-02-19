@@ -1,4 +1,4 @@
-package spb.alex.security_3_1_2.controller;
+package spb.alex.security_3_1_3.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
@@ -7,10 +7,11 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import spb.alex.security_3_1_2.model.User;
-import spb.alex.security_3_1_2.service.UserService;
+import org.springframework.web.bind.annotation.RestController;
+import spb.alex.security_3_1_3.model.User;
+import spb.alex.security_3_1_3.service.UserService;
 
-@Controller
+@RestController
 @RequestMapping("/")
 public class UserController {
 
@@ -21,20 +22,19 @@ public class UserController {
         this.userService = userService;
     }
 
-    @GetMapping(value = "/user")
-    public String getUserProfile(Model model, Authentication authentication) {
+    @GetMapping(value = "/user/get")
+    public User getUserProfile(Authentication authentication) {
 
         if (authentication != null) {
             UserDetails ud = (UserDetails) authentication.getPrincipal();
-            User user = userService.findByName(ud.getUsername());
-            model.addAttribute("user", user);
-            boolean b = ud.getAuthorities().stream().anyMatch(
-                    a -> a.getAuthority().equals("ROLE_ADMIN"));
-            model.addAttribute("iAmAdmin", (b) ? 1 : 0);
-        } else {
-            model.addAttribute("iAmAdmin", 0);
+            //            model.addAttribute("user", user);
+//            boolean b = ud.getAuthorities().stream().anyMatch(
+//                    a -> a.getAuthority().equals("ROLE_ADMIN"));
+//            model.addAttribute("iAmAdmin", (b) ? 1 : 0);
+//        } else {
+//            model.addAttribute("iAmAdmin", 0);
+            return userService.findByName(ud.getUsername());
         }
-
-        return "user";
+        return new User();
     }
 }

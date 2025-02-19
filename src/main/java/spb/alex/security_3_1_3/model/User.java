@@ -1,11 +1,13 @@
-package spb.alex.security_3_1_2.model;
+package spb.alex.security_3_1_3.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.Collection;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 @Entity
 @Table(name = "users")
@@ -57,6 +59,13 @@ public class User implements UserDetails {
         this.id = id;
     }
 
+    public String getPhone() {
+        return phone;
+    }
+
+    public void setPhone(String phone) {
+        this.phone = phone;
+    }
 
     public Long getId() {
         return id;
@@ -103,8 +112,11 @@ public class User implements UserDetails {
     }
 
     @Override
+    @JsonIgnore
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return getRoles();
+        return roles.stream()
+                .map(role -> (GrantedAuthority) role::getAuthority)
+                .collect(Collectors.toSet());
     }
 
     @Override

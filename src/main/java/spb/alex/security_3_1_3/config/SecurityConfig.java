@@ -1,9 +1,10 @@
-package spb.alex.security_3_1_2.config;
+package spb.alex.security_3_1_3.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
@@ -24,10 +25,12 @@ public class SecurityConfig {
                         .requestMatchers("/admin/**").hasRole("ADMIN")
                         .requestMatchers("/user").hasAnyRole("USER", "ADMIN")
                         .requestMatchers("/static/**", "/css/**", "/js/**", "/images/**").permitAll()
-                        .anyRequest().authenticated())
+                        .requestMatchers("/v3/api-docs/**", "/swagger-ui/**").permitAll()
+                        .anyRequest().permitAll())//.authenticated())
+                .csrf(AbstractHttpConfigurer::disable)
+                .cors(AbstractHttpConfigurer::disable)
                 .formLogin(formLogin -> formLogin
-                        .successHandler(successUserHandler))
-                .logout(logout -> logout.logoutSuccessUrl("/users"));
+                        .successHandler(successUserHandler));
 
         return http.build();
     }

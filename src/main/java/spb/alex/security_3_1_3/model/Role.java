@@ -1,8 +1,10 @@
-package spb.alex.security_3_1_2.model;
+package spb.alex.security_3_1_3.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import org.springframework.security.core.GrantedAuthority;
 
+import java.util.Objects;
 import java.util.Set;
 
 @Entity
@@ -10,12 +12,13 @@ import java.util.Set;
 public class Role implements GrantedAuthority {
 
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @Column(unique = true)
     private String name;
 
-    @Transient
+
     @ManyToMany(fetch = FetchType.LAZY,
             mappedBy = "roles")
     private Set<User> users;
@@ -48,7 +51,7 @@ public class Role implements GrantedAuthority {
     public void setName(String name) {
         this.name = name;
     }
-
+    @JsonIgnore
     public Set<User> getUsers() {
         return users;
     }
@@ -58,7 +61,29 @@ public class Role implements GrantedAuthority {
     }
 
     @Override
+    @JsonIgnore
     public String getAuthority() {
         return getName();
+    }
+
+    @Override
+    public String toString() {
+        return "Role{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", users=" + users +
+                '}';
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (o == null || getClass() != o.getClass()) return false;
+        Role role = (Role) o;
+        return Objects.equals(id, role.id) && Objects.equals(name, role.name) && Objects.equals(users, role.users);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, name, users);
     }
 }
